@@ -1,0 +1,212 @@
+[{
+	"request": {
+		"values": [
+			["M", 27, "Single", "Professional"],
+			["F", 39, "Single", "Executive"],
+			["M", 39, "Married", "Student"],
+			["F", 56, "Single", "Hospitality"],
+			["M", 45, "Married", "Retired"],
+			["M", 45, "Married", "Retired"],
+			["M", 39, "Married", "Student"],
+			["M", 49, "Married", "Student"],
+			["F", 49, "Married", "Retired"],
+			["M", 47, "Married", "Retired"],
+			["M", 47, "Married", "Retired"],
+			["M", 21, "Single", "Retail"],
+			["F", 66, "Single", "Executive"],
+			["M", 35, "Married", "Professional"],
+			["M", 20, "Single", "Sales"],
+			["M", 20, "Single", "Sales"],
+			["M", 20, "Single", "Sales"],
+			["F", 37, "Single", "Executive"],
+			["M", 42, "Married", "Student"],
+			["M", 24, "Married", "Retail"],
+			["F", 24, "Single", "Retail"],
+			["M", 29, "Single", "Retail"],
+			["M", 29, "Married", "Retail"],
+			["M", 43, "Married", "Trades"],
+			["M", 43, "Married", "Trades"],
+			["M", 43, "Married", "Hospitality"],
+			["M", 43, "Married", "Hospitality"],
+			["M", 43, "Married", "Hospitality"],
+			["M", 43, "Married", "Hospitality"],
+			["M", 29, "Single", "Student"],
+			["M", 41, "Single", "Professional"],
+			["M", 32, "Married", "Student"],
+			["M", 34, "Married", "Sales"],
+			["F", 18, "Single", "Student"],
+			["F", 31, "Married", "Executive"],
+			["M", 28, "Married", "Trades"],
+			["M", 24, "Single", "Student"],
+			["M", 29, "Married", "Student"],
+			["M", 29, "Married", "Student"],
+			["F", 68, "Single", "Hospitality"],
+			["M", 42, "Married", "Trades"],
+			["M", 42, "Married", "Trades"],
+			["M", 33, "Married", "Hospitality"],
+			["M", 33, "Married", "Hospitality"],
+			["M", 33, "Married", "Hospitality"],
+			["F", 54, "Married", "Sales"],
+			["F", 54, "Married", "Sales"],
+			["F", 54, "Married", "Sales"],
+			["M", 38, "Married", "Executive"],
+			["M", 38, "Married", "Executive"]
+		],
+		"fields": ["GENDER", "AGE", "MARITAL_STATUS", "PROFESSION"]
+	},
+	"response": {
+		"values": [
+			[
+				[0.217781239752118, 0.00791845655317845, 0.497100833059808, 0, 0.277199470634895], 2, "Mountaineering Equipment"
+			],
+			[
+				[0, 0, 0, 0, 1], 4, "Personal Accessories"
+			],
+			[
+				[0.767265001796438, 0.012600941013994, 0.217325539106548, 0, 0.00280851808302043], 0, "Camping Equipment"
+			],
+			[
+				[0, 0, 0, 0, 1], 4, "Personal Accessories"
+			],
+			[
+				[0, 0.900590424027924, 0, 0.0451453787391287, 0.0542641972329472], 1, "Golf Equipment"
+			],
+			[
+				[0, 0.900590424027924, 0, 0.0451453787391287, 0.0542641972329472], 1, "Golf Equipment"
+			],
+			[
+				[0.767265001796438, 0.012600941013994, 0.217325539106548, 0, 0.00280851808302043], 0, "Camping Equipment"
+			],
+			[
+				[0.944136400051264, 0, 0.0558635999487363, 0, 0], 0, "Camping Equipment"
+			],
+			[
+				[0, 0, 0, 0.788405251800539, 0.211594748199461], 3, "Outdoor Protection"
+			],
+			[
+				[0.0251615803223789, 0.910282005890779, 0, 0.0645564137868426, 0], 1, "Golf Equipment"
+			],
+			[
+				[0.0251615803223789, 0.910282005890779, 0, 0.0645564137868426, 0], 1, "Golf Equipment"
+			],
+			[
+				[0.0456375250997168, 0, 0.773287633559955, 0.0304102716811164, 0.150664569659212], 2, "Mountaineering Equipment"
+			],
+			[
+				[0, 0, 0, 0, 1], 4, "Personal Accessories"
+			],
+			[
+				[0.467483712419946, 0, 0.39516317080607, 0, 0.137353116773983], 0, "Camping Equipment"
+			],
+			[
+				[0.250935562373521, 0.0351894949271407, 0.569260636618254, 0.0117145426071491, 0.132899763473935], 2, "Mountaineering Equipment"
+			],
+			[
+				[0.250935562373521, 0.0351894949271407, 0.569260636618254, 0.0117145426071491, 0.132899763473935], 2, "Mountaineering Equipment"
+			],
+			[
+				[0.250935562373521, 0.0351894949271407, 0.569260636618254, 0.0117145426071491, 0.132899763473935], 2, "Mountaineering Equipment"
+			],
+			[
+				[0, 0, 0, 0, 1], 4, "Personal Accessories"
+			],
+			[
+				[0.843438397140825, 0, 0.156561602859175, 0, 0], 0, "Camping Equipment"
+			],
+			[
+				[1, 0, 0, 0, 0], 0, "Camping Equipment"
+			],
+			[
+				[0.017920250398432, 0, 0.0116580418853048, 0, 0.970421707716263], 4, "Personal Accessories"
+			],
+			[
+				[0.0858490609630765, 0, 0.754266426465398, 0, 0.159884512571526], 2, "Mountaineering Equipment"
+			],
+			[
+				[1, 0, 0, 0, 0], 0, "Camping Equipment"
+			],
+			[
+				[0.726620019492099, 0.241817064324419, 0.0131319080764191, 0, 0.0184310081070628], 0, "Camping Equipment"
+			],
+			[
+				[0.726620019492099, 0.241817064324419, 0.0131319080764191, 0, 0.0184310081070628], 0, "Camping Equipment"
+			],
+			[
+				[1, 0, 0, 0, 0], 0, "Camping Equipment"
+			],
+			[
+				[1, 0, 0, 0, 0], 0, "Camping Equipment"
+			],
+			[
+				[1, 0, 0, 0, 0], 0, "Camping Equipment"
+			],
+			[
+				[1, 0, 0, 0, 0], 0, "Camping Equipment"
+			],
+			[
+				[0.0660027603226186, 0, 0.859596161241508, 0, 0.0744010784358735], 2, "Mountaineering Equipment"
+			],
+			[
+				[0.0240359632656658, 0, 0.473394742404126, 0, 0.502569294330208], 4, "Personal Accessories"
+			],
+			[
+				[0.740079339678486, 0, 0.259920660321513, 0, 0], 0, "Camping Equipment"
+			],
+			[
+				[0.812974507926475, 0.0846192295514545, 0.0474775911630047, 0.0081599928001861, 0.0467686785588797], 0, "Camping Equipment"
+			],
+			[
+				[0.0295809001566728, 0, 0.0601321036889332, 0.00421948440393106, 0.906067511750463], 4, "Personal Accessories"
+			],
+			[
+				[0.160678215285611, 0.673042531332888, 0.030782138108111, 0.0165154677128564, 0.118981647560534], 1, "Golf Equipment"
+			],
+			[
+				[1, 0, 0, 0, 0], 0, "Camping Equipment"
+			],
+			[
+				[0.0885881209897227, 2.78396436525612E-4, 0.666617134057318, 0.00662885700531305, 0.23788749151112], 2, "Mountaineering Equipment"
+			],
+			[
+				[0.83760154753524, 0, 0.162398452464761, 0, 0], 0, "Camping Equipment"
+			],
+			[
+				[0.83760154753524, 0, 0.162398452464761, 0, 0], 0, "Camping Equipment"
+			],
+			[
+				[0, 0, 0, 0, 1], 4, "Personal Accessories"
+			],
+			[
+				[0.734674371989092, 0.172055323822627, 0.0274674551323183, 0, 0.0658028490559626], 0, "Camping Equipment"
+			],
+			[
+				[0.734674371989092, 0.172055323822627, 0.0274674551323183, 0, 0.0658028490559626], 0, "Camping Equipment"
+			],
+			[
+				[1, 0, 0, 0, 0], 0, "Camping Equipment"
+			],
+			[
+				[1, 0, 0, 0, 0], 0, "Camping Equipment"
+			],
+			[
+				[1, 0, 0, 0, 0], 0, "Camping Equipment"
+			],
+			[
+				[0, 1, 0, 0, 0], 1, "Golf Equipment"
+			],
+			[
+				[0, 1, 0, 0, 0], 1, "Golf Equipment"
+			],
+			[
+				[0, 1, 0, 0, 0], 1, "Golf Equipment"
+			],
+			[
+				[0.208800658991445, 0.586157799192235, 0.0673843440535269, 0.0129231870806275, 0.124734010682166], 1, "Golf Equipment"
+			],
+			[
+				[0.208800658991445, 0.586157799192235, 0.0673843440535269, 0.0129231870806275, 0.124734010682166], 1, "Golf Equipment"
+			]
+		],
+		"fields": ["probability", "prediction", "predicted_label"]
+	}
+}]
