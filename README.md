@@ -1,6 +1,6 @@
 # IBM Watson OpenScale tutorials
 
-**SDK DOC VERSION INFO:**
+**SDK DETAILS:**
 
 - [IBM Watson Machine Learning](http://ibm-wml-api-pyclient.mybluemix.net/)
 - [IBM Watson Openscale](http://ibm-watson-openscale-client.mybluemix.net/)
@@ -50,11 +50,11 @@
 
 - Step 1: Data mart creation, model deployment monitoring and data analysis - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/Cloud%20Pak%20for%20Data/SPSS%20C%26DS/notebooks/binary/AI%20OpenScale%20and%20SPSS%20C%26DS%20Engine.ipynb)
 
-## Model Risk Management, Governance & other Features
+## Model Risk Management, Governance & Other Features
 
 **Watson OpenScale Model Risk Management**
 
-### IBM Cloud
+#### IBM Cloud
 
 - Tutorial 1. OpenScale Model Risk Governance with OpenPages Integration on IBM Cloud - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/IBM%20Cloud/WML/notebooks/model_risk_management/OpenScale%20and%20OpenPages%20model%20risk%20management%20on%20IBM%20Cloud.ipynb)
 - Tutorial 2. OpenScale Model Risk Management on IBM Cloud - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/IBM%20Cloud/WML/notebooks/model_risk_management/OpenScale%20model%20risk%20management%20on%20IBM%20Cloud.ipynb)
