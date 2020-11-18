@@ -5,6 +5,12 @@
 - [IBM Watson Machine Learning](http://ibm-wml-api-pyclient.mybluemix.net/)
 - [IBM Watson Openscale](http://ibm-watson-openscale-client.mybluemix.net/)
 
+** Additional resources: **
+
+- [OpenScale Identity and Access management](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/iam.html)
+- [Assigning access to account management services](https://cloud.ibm.com/docs/account?topic=account-account-services)
+- [Supported machine learning engines, frameworks and models](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-frameworks-ovr.html)
+
 ## IBM Cloud
 
 **Tutorial 1: Working with Watson Machine Learning engine**
@@ -49,6 +55,12 @@
 **Tutorial 2. Working with IBM SPSS C&DS engine**
 
 - Step 1: Data mart creation, model deployment monitoring and data analysis - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/Cloud%20Pak%20for%20Data/SPSS%20C%26DS/notebooks/binary/AI%20OpenScale%20and%20SPSS%20C%26DS%20Engine.ipynb)
+
+**Tutorial 3. Working with Batch Support (Quality and Drift ONLY)**
+
+- Step 1: Generate common configuration for batch subscriptions - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/Cloud%20Pak%20for%20Data/Batch%20Support/Configuration%20generation%20for%20OpenScale%20batch%20subscription.ipynb)
+
+- Step 2: Analyze drifted transactions for batch subscriptions- [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/Cloud%20Pak%20for%20Data/Batch%20Support/Analyze%20drifted%20transactions.ipynb)
 
 ## Model Risk Management, Governance & Other Features
 
