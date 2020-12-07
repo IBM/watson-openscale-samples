@@ -62,6 +62,10 @@
 
 - Step 2: Analyze drifted transactions for batch subscriptions- [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/Cloud%20Pak%20for%20Data/Batch%20Support/Analyze%20drifted%20transactions.ipynb)
 
+**Tutorial 4. Working with Batch Support using IBM Analytics Engine** - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/Cloud%20Pak%20for%20Data/Batch%20Support/Watson%20OpenScale%20and%20Batch%20Support%20with%20IBM%20Analytics%20Engine.ipynb)
+
+**Tutorial 5. Working with Batch Support using Remote Spark Engine** - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/Cloud%20Pak%20for%20Data/Batch%20Support/Watson%20OpenScale%20and%20Batch%20Support%20with%20Remote%20Spark.ipynb)
+
 ## Model Risk Management, Governance & Other Features
 
 **Watson OpenScale Model Risk Management**
