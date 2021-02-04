@@ -5,7 +5,7 @@
 - [IBM Watson Machine Learning](http://ibm-wml-api-pyclient.mybluemix.net/)
 - [IBM Watson Openscale](http://ibm-watson-openscale-client.mybluemix.net/)
 
-** Additional resources: **
+**Additional resources:**
 
 - [OpenScale Identity and Access management](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/iam.html)
 - [Assigning access to account management services](https://cloud.ibm.com/docs/account?topic=account-account-services)
