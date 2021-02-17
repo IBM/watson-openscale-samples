@@ -74,13 +74,19 @@
 
 - Tutorial 1. OpenScale Model Risk Governance with OpenPages Integration on IBM Cloud - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/IBM%20Cloud/WML/notebooks/model_risk_management/OpenScale%20and%20OpenPages%20model%20risk%20management%20on%20IBM%20Cloud.ipynb)
 - Tutorial 2. OpenScale Model Risk Management on IBM Cloud - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/IBM%20Cloud/WML/notebooks/model_risk_management/OpenScale%20model%20risk%20management%20on%20IBM%20Cloud.ipynb)
+- Tutorial 3. OpenScale Model Metrics Mapping with Openpages - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/IBM%20Cloud/WML/notebooks/model_risk_management/Openscale%20MRM%20Metrics%20Mapping.ipynb)
 
 #### IBM Cloud Pak for Data
 
 - Tutorial 1. OpenScale Model Risk Governance with OpenPages Integration on IBM Cloud Pak for Data - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/Cloud%20Pak%20for%20Data/WML/notebooks/model%20risk%20management/MRM%20E2E%20with%20Openpages%20on%20CP4D.ipynb)
+- Tutorial 2. OpenScale Model Risk Management on IBM Cloud Pak for Data - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/Cloud%20Pak%20for%20Data/WML/notebooks/model%20risk%20management/OpenScale%20MRM%20Cloud%20pak%20for%20Data.ipynb)
 
 **Watson OpenScale Indirect Bias detection**
 
 - Tutorial 1: Watson OpenScale indirect bias detection for protected features - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/IBM%20Cloud/WML/notebooks/indirect_bias/OpenScale%20Indirect%20Bias%20and%20Watson%20ML.ipynb)
 
 - Tutorial 2: Watson OpenScale indirect bias and active debiasing on IBM Cloud Pak for data - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/Cloud%20Pak%20for%20Data/WML/notebooks/indirect_bias/OpenScale%20Indirect%20Bias%20and%20active%20debias%20API%20usage%20-%20CP4D.ipynb)
+
+**Miscellaneous**
+
+- Tutorial 1: Watson OpenScale Configure subscription monitors using training data statistics - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/IBM%20Cloud/WML/notebooks/Misc/Configure%20subscription%20monitors%20using%20training%20statistics.ipynb)
