@@ -11,6 +11,7 @@
 - [Assigning access to account management services](https://cloud.ibm.com/docs/account?topic=account-account-services)
 - [Supported machine learning engines, frameworks and models](https://dataplatform.cloud.ibm.com/docs/content/wsj/model/wos-frameworks-ovr.html)
 
+
 ## IBM Cloud
 
 **Tutorial 1: Working with Watson Machine Learning engine**
@@ -45,6 +46,10 @@
 **Tutorial 7: Working with Regression models**
 
 - Step 1: Watson OpenScale monitoring for Regression Model- [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/IBM%20Cloud/WML/notebooks/regression/xgboost_scikit_wrapper/Watson%20OpenScale%20and%20Watson%20ML%20Engine%20Regression.ipynb)
+
+**Tutorial 1: Working with Custom Machine Learning Provider**
+
+- Step 1: Watson OpenScale Monitoring using Custom ML Provider - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/IBM%20Cloud/Custom%20ML%20Provider/OpenScale%20Custom%20ML%20Provider%20-%20All%20Monitors.ipynb)
 
 ## IBM Cloud Pak for Data
 
@@ -90,3 +95,5 @@
 **Miscellaneous**
 
 - Tutorial 1: Watson OpenScale Configure subscription monitors using training data statistics - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/IBM%20Cloud/WML/notebooks/Misc/Configure%20subscription%20monitors%20using%20training%20statistics.ipynb)
+
+
