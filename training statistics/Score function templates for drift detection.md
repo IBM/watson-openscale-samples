@@ -1,9 +1,10 @@
 # Score function templates for drift detection model generation
 
-Users are expected to author custom score functions that needs to be supplied as a input while generating drift detection model using ibm-ai-openscale python client. This page has some templates of score functions that can be used for reference. 
+Users are expected to author custom score functions that needs to be supplied as an input while generating drift detection model using ibm-ai-openscale python client. This page has some templates of score functions that can be used for reference. 
 
 ### Input to score function:
   - **training_data_frame :** Dataframe of the training data
+    - Contains feature columns
 
 ### Output from score function:
  - **predicted label (aka decoded-target) numpy array :**
@@ -28,12 +29,12 @@ Users are expected to author custom score functions that needs to be supplied as
 - [Custom Model Engine](#Custom)
 
 ## WML Model Engine: <a name="WML"></a>
-This section provides the score function templates for model deployed in WML. There are 2 formats specified (local model , online model) and user is free to choose any of the formats . **The templates specified below are common for binary / muticlass classification cases**.
+This section provides the score function templates for model deployed in WML. There are 2 formats specified (local model , online model) and user is free to choose any of the formats . **The templates specified below are common for binary / multi-class classification cases**.
 ### Local mode: <a name="LocalMode"></a>
 - Model stored in WML is retrieved and loaded in local environment. This model is used to score.
 ```
 def score(training_data_frame):
-    WML_CREDENTAILS = {
+    WML_CREDENTIALS = {
         <EDIT THIS>
     }
     try:
@@ -46,7 +47,7 @@ def score(training_data_frame):
         # Load the WML model in local object
         from ibm_watson_machine_learning import APIClient
 
-        wml_client = APIClient(WML_CREDENTAILS)
+        wml_client = APIClient(WML_CREDENTIALS)
         model = wml_client.repository.load(model_id)
         
         # Predict the training data locally 
@@ -57,16 +58,16 @@ def score(training_data_frame):
         spark_frame.printSchema()
         
         score_predictions = model.transform(spark_frame)
-        score_preditions_pd = score_predictions.select("*").toPandas()
+        score_predictions_pd = score_predictions.select("*").toPandas()
 
         probability_column_name = <EDIT THIS>
         prediction_column_name = <EDIT THIS>
         
         import numpy as np
         probability_array = np.array(
-            [x.tolist() for x in score_preditions_pd[probability_column_name]])
+            [x.tolist() for x in score_predictions_pd[probability_column_name]])
         prediction_vector = np.array(
-            [x for x in score_preditions_pd[prediction_column_name]])
+            [x for x in score_predictions_pd[prediction_column_name]])
         
         return probability_array, prediction_vector
     except Exception as ex:
@@ -80,11 +81,11 @@ def score(training_data_frame):
 ### Online Scoring: <a name="OnlineScoring"></a>
 - Using `deployment_id` and `space_id`. This snippet uses the online scoring endpoint of a WML model using IBM WML python client library. **As this is online scoring , a cost is associated with the same .**
 - **Note:** Please install python library "ibm_watson_machine_learning" to execute below snippet.
-- **Binary or Multiclass Classifier**
+- **Binary or Multi-class Classifier**
 ```
 def score(training_data_frame):
     # To be filled by the user
-    WML_CREDENTAILS = {
+    WML_CREDENTIALS = {
         <EDIT THIS>
     }
     try:
@@ -103,7 +104,7 @@ def score(training_data_frame):
         # print(training_data_rows)
 
         from ibm_watson_machine_learning import APIClient
-        wml_client = WatsonMachineLearningAPIClient(WML_CREDENTAILS)
+        wml_client = WatsonMachineLearningAPIClient(WML_CREDENTIALS)
         wml_client.set.default_space(space_id)
 
         payload_scoring = {
@@ -135,7 +136,7 @@ def score(training_data_frame):
 ```
 def score(training_data_frame):
     # To be filled by the user
-    WML_CREDENTAILS = {
+    WML_CREDENTIALS = {
         <EDIT THIS>
     }
     try:
@@ -150,7 +151,7 @@ def score(training_data_frame):
         # print(training_data_rows)
 
         from ibm_watson_machine_learning import APIClient
-        wml_client = WatsonMachineLearningAPIClient(WML_CREDENTAILS)
+        wml_client = WatsonMachineLearningAPIClient(WML_CREDENTIALS)
         wml_client.set.default_space(space_id)
 
         payload_scoring = {
@@ -231,7 +232,7 @@ def score(training_data_frame):
         #     }
         # }
         # If your scoring response does not match above schema, 
-        # please modify below code to extract prediction and probabilties array
+        # please modify below code to extract prediction and probabilities array
 
         # Extract results part
         results = response.json()["Results"]["output1"]["value"]
@@ -262,7 +263,7 @@ def score(training_data_frame):
         # Construct predicted_label array
         predicted_vector = np.array([value[0] for value in output])
 
-        # Construct probabilites array
+        # Construct probabilities array
         probability_array = np.array([[value[1],(1-value[1])] for value in output])
 
         return probability_array, predicted_vector
@@ -270,7 +271,7 @@ def score(training_data_frame):
         raise Exception("Scoring failed. {}".format(str(ex)))
 ```
 
-- **Multiclass Classifier**
+- **Multi-class Classifier**
 ```
 def score(training_data_frame):
     azure_scoring_url = <REQUEST RESPONSE URL FROM AZURE MODEL>
@@ -325,7 +326,7 @@ def score(training_data_frame):
         #     }
         # }
         # If your scoring response does not match above schema, 
-        # please modify below code to extract prediction and probabilties array
+        # please modify below code to extract prediction and probabilities array
 
         # Extract results
         results = response.json()["Results"]["output1"]["value"]
@@ -413,7 +414,7 @@ def score(training_data_frame):
         #     }
         # }
         # If your scoring response does not match above schema, 
-        # please modify below code to extract prediction and probabilties array
+        # please modify below code to extract prediction and probabilities array
 
         # Extract results
         results = response.json()["Results"]["output1"]["value"]
@@ -436,9 +437,9 @@ def score(training_data_frame):
 ```
 
 ### Azure ML Service: <a name="AzureMLService"></a>
-This section provides the score function templates for model deployed in Azure ML Service. User needs to consider that online scoring endpoints of Azure ML Service will be used. The below snippet is valid for both multiclass and binary classfication model. **As this is online scoring, a cost is associated with the same .**
+This section provides the score function templates for model deployed in Azure ML Service. User needs to consider that online scoring endpoints of Azure ML Service will be used. The below snippet is valid for both multi-class and binary classification model. **As this is online scoring, a cost is associated with the same .**
 
-- **Binary or Multiclass Classifier**
+- **Binary or Multi-class Classifier**
 ```
 def score(training_data_frame):
     az_scoring_uri = <EDIT THIS>
@@ -490,7 +491,7 @@ def score(training_data_frame):
         #     }
         # }
         # If your scoring response does not match above schema, 
-        # please modify below code to extract prediction and probabilties array
+        # please modify below code to extract prediction and probabilities array
 
         response_dict = json.loads(response.json())
         results = response_dict["Results"]["output1"]
@@ -567,7 +568,7 @@ def score(training_data_frame):
         #     }
         # }
         # If your scoring response does not match above schema, 
-        # please modify below code to extract prediction and probabilties array
+        # please modify below code to extract prediction and probabilities array
 
         response_dict = json.loads(response.json())
         results = response_dict["Results"]["output1"]
@@ -642,7 +643,7 @@ def score(training_data_frame):
         for result in results :
             predicted_label_list.append(result[prediction_column_name])
             
-            # To be noted that probability always to beloing to the same class label
+            # Please note probability always to belongs to the same class label
             score_prob_list.append(result[probability_column_name])
 
         import numpy as np
@@ -654,7 +655,7 @@ def score(training_data_frame):
         raise Exception("Scoring failed. {}".format(str(ex)))
 ```
 
-- **Multiclass Classifier**
+- **Multi-class Classifier**
 ```
 def score(training_data_frame):
     SAGEMAKER_CREDENTIALS = {
@@ -774,9 +775,9 @@ def score(training_data_frame):
 ```
 
 ## SPSS Model Engine: <a name="SPSS"></a>
-This section provides the score function template for model deployed in SPSS model engine. The online scoring end point of custom engine will be used for scoring. The below snippets holds good for binary/multiclass. **As this is online scoring, a cost is associated with the same .**
+This section provides the score function template for model deployed in SPSS model engine. The online scoring end point of custom engine will be used for scoring. The below snippets holds good for binary/multi-class. **As this is online scoring, a cost is associated with the same .**
 
-- **Binary or Multiclass Classifier**
+- **Binary or Multi-class Classifier**
 ```
 def score(training_data_frame):
     SPSS_CREDENTIALS = {
@@ -831,7 +832,7 @@ def score(training_data_frame):
 
         # identify prediction and probability column names
         probability_column_names = [item for item in output_column_names \
-            if item.startswith(probabilituy_column_prefix)]
+            if item.startswith(probability_column_prefix)]
         if len(probability_column_names) == 0:
             raise Exception("No probability column found. Please specify probability column name.")
 
@@ -951,7 +952,7 @@ def score(training_data_frame):
 ```
 
 ## Custom Model Engine: <a name="Custom"></a>
-This section provides the score function template for model deployed in a custom engine. The online scoring end point of custom engine will be used for scoring. The below snippets holds good for binary/multiclass. **As this is online scoring, a cost is associated with the same .**
+This section provides the score function template for model deployed in a custom engine. The online scoring end point of custom engine will be used for scoring. The below snippets holds good for binary/multi-class. **As this is online scoring, a cost is associated with the same .**
 
 ```
 def score(training_data_frame):
