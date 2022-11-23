@@ -39,6 +39,7 @@ def score(training_data_frame):
     }
     try:
         # Supply the model id
+        space_id = <EDIT THIS>
         model_id = <EDIT THIS>
         
         # Retain feature columns from user selection
@@ -46,8 +47,8 @@ def score(training_data_frame):
         
         # Load the WML model in local object
         from ibm_watson_machine_learning import APIClient
-
         wml_client = APIClient(WML_CREDENTIALS)
+        wml_client.set.default_space(space_id)
         model = wml_client.repository.load(model_id)
         
         # Predict the training data locally 
@@ -103,8 +104,9 @@ def score(training_data_frame):
         training_data_rows = training_data_frame[feature_columns].values.tolist()
         # print(training_data_rows)
 
+        # Load the WML model in local object
         from ibm_watson_machine_learning import APIClient
-        wml_client = WatsonMachineLearningAPIClient(WML_CREDENTIALS)
+        wml_client = APIClient(WML_CREDENTIALS)
         wml_client.set.default_space(space_id)
 
         payload_scoring = {
@@ -151,7 +153,7 @@ def score(training_data_frame):
         # print(training_data_rows)
 
         from ibm_watson_machine_learning import APIClient
-        wml_client = WatsonMachineLearningAPIClient(WML_CREDENTIALS)
+        wml_client = APIClient(WML_CREDENTIALS)
         wml_client.set.default_space(space_id)
 
         payload_scoring = {
@@ -445,20 +447,17 @@ def score(training_data_frame):
     az_scoring_uri = <EDIT THIS>
     api_key = <DEPLOYMENT API KEY>
 
-    # edit these if your prediction and probability column have different names/prefixes
+    # edit these if your prediction and probability column have different names
     prediction_column_name = "Scored Labels"
-    probability_column_prefix = "Scored Probabilities"
+    probability_column_name = "Scored Probabilities"
 
     try:
         input_values = training_data_frame.values.tolist()
         feature_cols = list(training_data_frame.columns)
-        scoring_data = [{field: value  for field,value in zip(feature_cols, input_value)} for input_value in input_values]
+        input_data = [{field: value  for field,value in zip(feature_cols, input_value)} for input_value in input_values]
 
         payload = {
-            "Inputs": {
-                "input1": input1
-            },
-            "GlobalParameters": {}
+            "input": input_data
         }
 
         import requests
@@ -477,45 +476,27 @@ def score(training_data_frame):
 
         # assumed response json structure
         # {
-        #     "Results": {
-        #         "output1": [
-        #             {
-        #                 "feature_1": "feature_1_value",
-        #                 "feature_2": "feature_2_value",
-        #                 "Scored Probabilities for Class \"label_1\"": "0.00555555555555556",
-        #                 "Scored Probabilities for Class \"label_2\"": "0.948823289283816",
-        #                 "Scored Probabilities for Class \"label_3\"": "0",
-        #                 "Scored Labels": "prediction_value"
-        #             }
-        #         ]
-        #     }
+        #     "output": [
+        #         {
+        #             "Scored Labels": "Risk",
+        #             "Scored Probabilities": []
+        #         }
+        #     ]
         # }
         # If your scoring response does not match above schema, 
         # please modify below code to extract prediction and probabilities array
 
         response_dict = json.loads(response.json())
-        results = response_dict["Results"]["output1"]
+        output = response_dict["output"]
 
         # Compute for all values
         score_label_list = []
         score_prob_list = []
-
-        for value in results:
+        for value in output:
             score_label_list.append(str(value[prediction_column_name]))
+            score_prob_list.append(value[probability_column_name])
 
-            # Construct probability array
-            score_prob_values = [float(prob) for key,prob in value.items() \
-                if key.startswith(probability_column_prefix,0)]
-            score_prob_list.append(score_prob_values)
-
-        import numpy as np
-        # Construct predicted_label bucket
-        predicted_vector = np.array(score_label_list)
-
-        # Scored probabilities
-        probability_array = np.array(score_prob_list)
-
-        return probability_array, prediction_vector
+        return np.array(score_prob_list), np.array(score_label_list)
     except Exception as ex:
         raise Exception("Scoring failed. {}".format(str(ex)))
 ```
@@ -532,13 +513,10 @@ def score(training_data_frame):
     try:
         input_values = training_data_frame.values.tolist()
         feature_cols = list(training_data_frame.columns)
-        scoring_data = [{field: value  for field,value in zip(feature_cols, input_value)} for input_value in input_values]
+        input_data = [{field: value  for field,value in zip(feature_cols, input_value)} for input_value in input_values]
 
         payload = {
-            "Inputs": {
-                "input1": input1
-            },
-            "GlobalParameters": {}
+            "input": input_data
         }
 
         import requests
@@ -557,32 +535,24 @@ def score(training_data_frame):
 
         # assumed response json structure
         # {
-        #     "Results": {
-        #         "output1": [
-        #             {
-        #                 "feature_1": "feature_1_value",
-        #                 "feature_2": "feature_2_value",
-        #                 "Scored Labels": "prediction_value"
-        #             }
-        #         ]
-        #     }
+        #     "output": [
+        #         {
+        #             "Scored Labels": 123
+        #         }
+        #     ]
         # }
         # If your scoring response does not match above schema, 
         # please modify below code to extract prediction and probabilities array
 
         response_dict = json.loads(response.json())
-        results = response_dict["Results"]["output1"]
+        output = response_dict["output"]
 
         # Compute for all values
         score_label_list = []
-        for value in results:
+        for value in output:
             score_label_list.append(str(value[prediction_column_name]))
 
-        import numpy as np
-        # Construct predicted_label bucket
-        predicted_vector = np.array(score_label_list)
-
-        return prediction_vector
+        return np.array(score_label_list)
     except Exception as ex:
         raise Exception("Scoring failed. {}".format(str(ex)))
 ```
