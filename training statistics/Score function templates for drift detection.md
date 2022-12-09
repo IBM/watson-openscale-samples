@@ -18,19 +18,19 @@ Users are expected to author custom score functions that needs to be supplied as
     * **Example:** probability numpy array: [[0.50,0.20,0.15,0.15] , [0.60,0.10,0.05,20.5], .......]
 
 ### Contents
-- [WML Model Engine](#WML)
-   * [Local mode](#LocalMode)
-   * [Online Scoring](#OnlineScoring)
-- [Azure Model Engine](#Azure)
-   * [Azure Studio](#AzureStudio)
-   * [Azure ML Service](#AzureMLService)
-- [AWS SageMaker Model Engine](#AWS)
-- [SPSS Model Engine](#SPSS)
-- [Custom Model Engine](#Custom)
+- [WML Model Engine](#wml-model-engine)
+   * [Local mode](#local-mode)
+   * [Online Scoring](#online-scoring)
+- [Azure Model Engine](#azure-model-engine)
+   * [Azure Studio](#azure-studio)
+   * [Azure ML Service](#azure-ml-service)
+- [AWS SageMaker Model Engine](#aws-sagemaker-model-engine)
+- [SPSS Model Engine](#spss-model-engine)
+- [Custom Model Engine](#custom-model-engine)
 
-## WML Model Engine: <a name="WML"></a>
+## WML Model Engine
 This section provides the score function templates for model deployed in WML. There are 2 formats specified (local model , online model) and user is free to choose any of the formats . **The templates specified below are common for binary / multi-class classification cases**.
-### Local mode: <a name="LocalMode"></a>
+### Local mode
 - Model stored in WML is retrieved and loaded in local environment. This model is used to score.
 ```
 def score(training_data_frame):
@@ -79,7 +79,7 @@ def score(training_data_frame):
         - If a model is generated and deployed using WML Model Builder  - the local mode does not work as WML python client does not support this context.
         
  
-### Online Scoring: <a name="OnlineScoring"></a>
+### Online Scoring
 - Using `deployment_id` and `space_id`. This snippet uses the online scoring endpoint of a WML model using IBM WML python client library. **As this is online scoring , a cost is associated with the same .**
 - **Note:** Please install python library "ibm_watson_machine_learning" to execute below snippet.
 - **Binary or Multi-class Classifier**
@@ -178,12 +178,91 @@ def score(training_data_frame):
         raise Exception("Scoring failed. Error: {}".format(str(ex)))
 ```
 
-## Azure Model Engine: <a name="Azure"></a>
-### Azure Studio: <a name="AzureStudio"></a>
-This section provides the score function templates for model deployed in Azure Model Engine. User needs to consider that online scoring endpoints of Azure Studio will be used. **As this is online scoring, a cost is associated with the same .**
+## Azure Model Engine
+### Azure Studio
+This section provides the score function templates for model deployed in Azure Model Engine. Please note online scoring endpoints of Azure Studio will be used. **As this is online scoring, a cost is associated with the same .**
 
-- **Binary Classifier**
+Following examples are provided for two kinds of endpoints:
+- with `workspaces` in scoring url. Example: `https://ussouthcentral.services.azureml.net/workspaces/<workspace_id>/services/<service_id>/execute?api-version=2.0&details=true`
+- with `subscriptions` in scoring url. Example: `https://ussouthcentral.services.azureml.net:443/subscriptions/<subscription_id>/services/<service_id>/execute?api-version=2.0&format=swagger`
+
+Depending on the selected endpoint, request and response schema changes.
+If you have a different schema for your request and response from scoring url, please adjust the following code snippets accordingly.
+
+- **Binary Classifier - For workspaces based scoring url**
 ```
+def get_scoring_request(training_data_frame):
+    input_values = training_data_frame.values.tolist()
+    feature_columns = list(training_data_frame.columns)
+
+    # Payload
+    payload = {
+        "Inputs": {
+            "input1": {
+                "ColumnNames": feature_columns,
+                "Values": input_values
+            }
+        },
+        "GlobalParameters": {}
+    }
+
+    return payload
+
+def get_prediction_probability_using_scoring_response(
+    response, prediction_column, probability_column):
+
+    # # assumed response json structure
+    # {
+    #     "Results": {
+    #         "output1": {
+    #             "type": "DataTable",
+    #             "value": {
+    #                 "ColumnNames": [
+    #                 ],
+    #                 "ColumnTypes": [
+    #                 ],
+    #                 "Values": [
+    #                     [],
+    #                     []
+    #                 ]
+    #             }
+    #         }
+    #     }
+    # }
+
+    results = response.json()["Results"]["output1"]["value"]
+
+    prob_col_index = list(results.get('ColumnNames')).index(probability_column)
+    predict_col_index = list(results.get('ColumnNames')).index(prediction_column)
+
+    if prob_col_index < 0 or predict_col_index < 0:
+        raise Exception("Missing prediction/probability column in the scoring response")
+
+    # Get Score label from first entry
+    first_entry = results.get('Values')[0]
+    score_label = first_entry[predict_col_index]
+    print(score_label)
+
+    score_prob_1 = float(first_entry[prob_col_index])
+    main_label = True
+    if score_prob_1 < 0.5:
+        #The score label is not main label of interest
+        main_label = False
+
+    output = [[value[predict_col_index], 1 - float(value[prob_col_index]) if \
+        (value[predict_col_index] == score_label and not main_label) else \
+            float(value[prob_col_index])] for value in results.get('Values')]
+    print(len(output))
+
+    import numpy as np
+    # Construct predicted_label array
+    predicted_vector = np.array([value[0] for value in output])
+
+    # Construct probabilities array
+    probability_array = np.array([[value[1],(1-value[1])] for value in output])
+
+    return probability_array, predicted_vector
+
 def score(training_data_frame):
     azure_scoring_url = <REQUEST RESPONSE URL FROM AZURE MODEL>
     token = <PRIMARY_KEY FROM AZURE MODEL>
@@ -193,88 +272,189 @@ def score(training_data_frame):
     probability_column_name = "Scored Probabilities"
 
     try:
-        input_values = training_data_frame.values.tolist()
-        feature_columns = list(training_data_frame.columns)
+        payload = get_scoring_request(training_data_frame=training_data_frame)
 
-        # Payload
         import requests
-        from datetime import datetime, timedelta
-
-        payload = {
-            "Inputs": {
-                "input1": {
-                    "ColumnNames": feature_columns,
-                    "Values": input_values
-                }
-            },
-            "GlobalParameters": {}
-        }
-
-        headers = {'Authorization': 'Bearer ' + token}
-        start = datetime.utcnow()
-        response = requests.post(azure_scoring_url, json=payload, headers=headers)
+        response = requests.post(
+            azure_scoring_url,
+            json=payload,
+            headers={
+                "Authorization": "Bearer {}".format(token)
+            })
         if not response.ok:
             raise Exception(str(response.content))
 
-        # assumed response json structure
-        # {
-        #     "Results": {
-        #         "output1": {
-        #         "type": "DataTable",
-        #         "value": {
-        #             "ColumnNames": [
-        #             ],
-        #             "ColumnTypes": [
-        #             ],
-        #             "Values": [
-        #                 [],[]
-        #             ]
-        #         }
-        #         }
-        #     }
-        # }
-        # If your scoring response does not match above schema, 
-        # please modify below code to extract prediction and probabilities array
-
-        # Extract results part
-        results = response.json()["Results"]["output1"]["value"]
-
-        prob_col_index = list(results.get('ColumnNames')).index(probability_column_name)
-        predict_col_index = list(results.get('ColumnNames')).index(prediction_column_name)
-
-        if prob_col_index < 0 or predict_col_index < 0:
-            raise Exception("Missing prediction/probability column in the scoring response")
-
-        # Get Score label from first entry
-        first_entry = results.get('Values')[0]
-        score_label = first_entry[predict_col_index]
-        print(score_label)
-
-        score_prob_1 = float(first_entry[prob_col_index])
-        main_label = True
-        if score_prob_1 < 0.5:
-            #The score label is not main label of interest
-            main_label = False
-
-        output = [[value[predict_col_index], 1 - float(value[prob_col_index]) if \
-            (value[predict_col_index] == score_label and not main_label) else \
-                float(value[prob_col_index])] for value in results.get('Values')]
-        print(len(output))
-
-        import numpy as np
-        # Construct predicted_label array
-        predicted_vector = np.array([value[0] for value in output])
-
-        # Construct probabilities array
-        probability_array = np.array([[value[1],(1-value[1])] for value in output])
-
-        return probability_array, predicted_vector
+        return get_prediction_probability_using_scoring_response(
+            response=response,
+            prediction_column=prediction_column_name,
+            probability_column=probability_column_name)
     except Exception as ex:
         raise Exception("Scoring failed. {}".format(str(ex)))
 ```
 
-- **Multi-class Classifier**
+- **Binary Classifier - For subscriptions based scoring url**
 ```
+def get_scoring_request(training_data_frame):
+    input_data = training_data.to_json(orient="records")
+
+    # Payload
+    import json
+    payload = {
+        "Inputs": {
+            "input1": json.loads(input_data)
+        },
+        "GlobalParameters": {}
+    }
+
+    return payload
+
+def get_prediction_probability_using_scoring_response(
+    response, prediction_column, probability_column):
+
+    # # assumed response json structure
+    # {
+    #     "Results": {
+    #         "output1": [
+    #             {
+    #                 "age": "28",
+    #                 "workclass": "Private",
+    #                 "education": "Masters",
+    #                 "marital-status": "Married-civ-spouse",
+    #                 "occupation": "Adm-clerical",
+    #                 "relationship": "Wife",
+    #                 "race": "White",
+    #                 "sex": "Male",
+    #                 "capital-gain": "0",
+    #                 "capital-loss": "0",
+    #                 "hours-per-week": "10",
+    #                 "native-country": "United-States",
+    #                 "Scored Labels": "<=50K",
+    #                 "Scored Probabilities": "0.189918905496597"
+    #             }
+    #         ]
+    #     }
+    # }
+
+    results = response.json()["Results"]["output1"]
+
+    # Get Score label from first entry
+    first_entry = results[0]
+    score_label = first_entry[prediction_column]
+
+    score_prob_1 = float(first_entry[probability_column])
+    main_label = True
+    if score_prob_1 < 0.5:
+        #The score label is not main label of interest
+        main_label = False
+
+    output = [[value[prediction_column], 1 - float(value[probability_column]) if \
+        (value[prediction_column] == score_label and not main_label) else \
+            float(value[probability_column])] for value in results]
+
+    import numpy as np
+    predicted_vector = np.array([value[0] for value in output])
+    probability_array = np.array([[value[1],(1-value[1])] for value in output])
+
+    return probability_array, predicted_vector
+
+def score(training_data_frame):
+    azure_scoring_url = <REQUEST RESPONSE URL FROM AZURE MODEL>
+    token = <PRIMARY_KEY FROM AZURE MODEL>
+
+    # edit these if your prediction and probability column have different names
+    prediction_column_name = "Scored Labels"
+    probability_column_name = "Scored Probabilities"
+
+    try:
+        payload = get_scoring_request(training_data_frame=training_data_frame)
+
+        import requests
+        response = requests.post(
+            azure_scoring_url,
+            json=payload,
+            headers={
+                "Authorization": "Bearer {}".format(token)
+            })
+        if not response.ok:
+            raise Exception(str(response.content))
+
+        return get_prediction_probability_using_scoring_response(
+            response=response,
+            prediction_column=prediction_column_name,
+            probability_column=probability_column_name)
+    except Exception as ex:
+        raise Exception("Scoring failed. {}".format(str(ex)))
+```
+
+- **Multi-class Classifier - For workspaces based scoring url**
+```
+def get_scoring_request(training_data_frame):
+    input_values = training_data_frame.values.tolist()
+    feature_columns = list(training_data_frame.columns)
+
+    # Payload
+    payload = {
+        "Inputs": {
+            "input1": {
+                "ColumnNames": feature_columns,
+                "Values": input_values
+            }
+        },
+        "GlobalParameters": {}
+    }
+
+    return payload
+
+def get_prediction_probability_using_scoring_response(
+    response, prediction_column, probability_column):
+
+    # # assumed response json structure
+    # {
+    #     "Results": {
+    #         "output1": {
+    #             "type": "DataTable",
+    #             "value": {
+    #                 "ColumnNames": [
+    #                 ],
+    #                 "ColumnTypes": [
+    #                 ],
+    #                 "Values": [
+    #                     [],
+    #                     []
+    #                 ]
+    #             }
+    #         }
+    #     }
+    # }
+
+    results = response.json()["Results"]["output1"]["value"]
+    result_column_names = list(results.get('ColumnNames'))
+
+    predict_col_index = result_column_names.index(prediction_column)
+    prob_col_indexes = [result_column_names.index(column_name) for column_name in result_column_names \
+        if column_name.startswith(probability_column, 0)]
+
+    # Compute for all values
+    score_label_list = []
+    score_prob_list = []
+
+    for value in results.get("Values"):
+        score_label_list.append(str(value[predict_col_index]))
+
+        #Construct prob
+        score_prob_values = [float(value[index]) for index in range(len(value)) \
+            if index in prob_col_indexes]
+        score_prob_list.append(score_prob_values)
+
+    import numpy as np
+    # Construct predicted_label bucket
+    predicted_vector = np.array(score_label_list)
+
+    # Scored probabilities
+    probability_array = np.array(score_prob_list)
+
+    return probability_array, predicted_vector
+
 def score(training_data_frame):
     azure_scoring_url = <REQUEST RESPONSE URL FROM AZURE MODEL>
     token = <PRIMARY_KEY FROM AZURE MODEL>
@@ -284,85 +464,123 @@ def score(training_data_frame):
     probability_column_prefix = "Scored Probabilities"
 
     try:
-        input_values = training_data_frame.values.tolist()
-        feature_columns = list(training_data_frame.columns)
+        payload = get_scoring_request(training_data_frame=training_data_frame)
 
-        # Payload
         import requests
-        from datetime import datetime, timedelta
-
-        payload = {
-            "Inputs": {
-                "input1": {
-                    "ColumnNames": feature_columns,
-                    "Values": input_values
-                }
-            },
-            "GlobalParameters": {}
-        }
-
-        headers = {'Authorization': 'Bearer ' + token}
-        start = datetime.utcnow()
-        response = requests.post(azure_scoring_url, json=payload, headers=headers)
+        response = requests.post(
+            azure_scoring_url,
+            json=payload,
+            headers={
+                "Authorization": "Bearer {}".format(token)
+            })
         if not response.ok:
             raise Exception(str(response.content))
 
-        response_time = (datetime.utcnow() - start).total_seconds() * 1000
-        print(response_time)
-
-        # assumed response json structure
-        # {
-        #     "Results": {
-        #         "output1": {
-        #         "type": "DataTable",
-        #         "value": {
-        #             "ColumnNames": [
-        #             ],
-        #             "ColumnTypes": [
-        #             ],
-        #             "Values": [
-        #                 [],[]
-        #             ]
-        #         }
-        #         }
-        #     }
-        # }
-        # If your scoring response does not match above schema, 
-        # please modify below code to extract prediction and probabilities array
-
-        # Extract results
-        results = response.json()["Results"]["output1"]["value"]
-        result_column_names = list(results.get('ColumnNames'))
-
-        predict_col_index = result_column_names.index(prediction_column_name)
-        prob_col_indexes = [result_column_names.index(column_name) for column_name in result_column_names \
-            if column_name.startswith(probability_column_prefix, 0)]
-
-        # Compute for all values
-        score_label_list = []
-        score_prob_list = []
-
-        for value in results.get("Values"):
-            score_label_list.append(str(value[predict_col_index]))
-
-            #Construct prob
-            score_prob_values = [float(value[index]) for index in range(len(value)) \
-                if index in prob_col_indexes]
-            score_prob_list.append(score_prob_values)
-
-        import numpy as np
-        # Construct predicted_label bucket
-        predicted_vector = np.array(score_label_list)
-
-        # Scored probabilities
-        probability_array = np.array(score_prob_list)
-
-        return probability_array, predicted_vector
+        return get_prediction_probability_using_scoring_response(
+            response=response,
+            prediction_column=prediction_column_name,
+            probability_column=probability_column_prefix)
     except Exception as ex:
         raise Exception("Scoring failed. {}".format(str(ex)))
 ```
 
-- **Regression**
+- **Multi-class Classifier - For subscriptions based scoring url**
+```
+def get_scoring_request(training_data_frame):
+    input_data = training_data.to_json(orient="records")
+
+    # Payload
+    import json
+    payload = {
+        "Inputs": {
+            "input1": json.loads(input_data)
+        },
+        "GlobalParameters": {}
+    }
+
+    return payload
+
+def get_prediction_probability_using_scoring_response(
+    response, prediction_column, probability_column):
+
+    # # assumed response json structure
+    # {
+    #     "Results": {
+    #         "output1": [
+    #             {
+    #                 "age": "28",
+    #                 "workclass": "Private",
+    #                 "education": "Masters",
+    #                 "marital-status": "Married-civ-spouse",
+    #                 "occupation": "Adm-clerical",
+    #                 "relationship": "Wife",
+    #                 "race": "White",
+    #                 "sex": "Male",
+    #                 "capital-gain": "0",
+    #                 "capital-loss": "0",
+    #                 "hours-per-week": "10",
+    #                 "native-country": "United-States",
+    #                 "Scored Labels": "<=50K",
+    #                 "Scored Probabilities for class <=50K": 0.81,
+    #                 "Scored Probabilities for class >50K": 0.19 
+    #             }
+    #         ]
+    #     }
+    # }
+
+    results = response.json()["Results"]["output1"]
+
+    # Compute for all values
+    score_label_list = []
+    score_prob_list = []
+
+    for value in results:
+        score_label_list.append(str(value[prediction_column]))
+
+        #Construct prob
+        score_prob_values = [float(prob) for key,prob in value.items() \
+              if key.startswith(probability_column,0)]
+        score_prob_list.append(score_prob_values)
+
+    import numpy as np
+    #Construct predicted_label bucket
+    predicted_vector = np.array(score_label_list)
+
+    #Scored probabilities
+    probability_array = np.array(score_prob_list)
+
+    return probability_array, predicted_vector
+
+def score(training_data_frame):
+    azure_scoring_url = <REQUEST RESPONSE URL FROM AZURE MODEL>
+    token = <PRIMARY_KEY FROM AZURE MODEL>
+
+    # edit these if your prediction and probability column have different names/prefixes
+    prediction_column_name = "Scored Labels"
+    probability_column_prefix = "Scored Probabilities"
+
+    try:
+        payload = get_scoring_request(training_data_frame=training_data_frame)
+
+        import requests
+        response = requests.post(
+            azure_scoring_url,
+            json=payload,
+            headers={
+                "Authorization": "Bearer {}".format(token)
+            })
+        if not response.ok:
+            raise Exception(str(response.content))
+
+        return get_prediction_probability_using_scoring_response(
+            response=response,
+            prediction_column=prediction_column_name,
+            probability_column=probability_column_prefix)
+    except Exception as ex:
+        raise Exception("Scoring failed. {}".format(str(ex)))
+```
+
+- **Regression - For workspaces based scoring url**
 ```
 def score(training_data_frame):
     azure_scoring_url = <REQUEST RESPONSE URL FROM AZURE MODEL>
@@ -438,7 +656,7 @@ def score(training_data_frame):
         raise Exception("Scoring failed. {}".format(str(ex)))
 ```
 
-### Azure ML Service: <a name="AzureMLService"></a>
+### Azure ML Service
 This section provides the score function templates for model deployed in Azure ML Service. User needs to consider that online scoring endpoints of Azure ML Service will be used. The below snippet is valid for both multi-class and binary classification model. **As this is online scoring, a cost is associated with the same .**
 
 - **Binary or Multi-class Classifier**
@@ -557,7 +775,7 @@ def score(training_data_frame):
         raise Exception("Scoring failed. {}".format(str(ex)))
 ```
 
-## AWS SageMaker Model Engine: <a name="AWS"></a>
+## AWS SageMaker Model Engine
 This section provides the score function templates for for model deployed in SageMaker Model Engine. User needs to consider that online scoring endpoints of SageMaker will be used.**As this is online scoring, a cost is associated with the same .** Please note that we are the below snipets are created with a assumption that input datasets for AWS are **one hot encoded for categorical columns** and label-encoded for **label column**
 
 - **Binary Classifier**
@@ -744,7 +962,7 @@ def score(training_data_frame):
         raise Exception("Scoring failed. {}".format(str(ex)))
 ```
 
-## SPSS Model Engine: <a name="SPSS"></a>
+## SPSS Model Engine
 This section provides the score function template for model deployed in SPSS model engine. The online scoring end point of custom engine will be used for scoring. The below snippets holds good for binary/multi-class. **As this is online scoring, a cost is associated with the same .**
 
 - **Binary or Multi-class Classifier**
@@ -921,7 +1139,7 @@ def score(training_data_frame):
         raise Exception("Scoring failed. {}".format(str(ex)))
 ```
 
-## Custom Model Engine: <a name="Custom"></a>
+## Custom Model Engine
 This section provides the score function template for model deployed in a custom engine. The online scoring end point of custom engine will be used for scoring. The below snippets holds good for binary/multi-class. **As this is online scoring, a cost is associated with the same .**
 
 ```
