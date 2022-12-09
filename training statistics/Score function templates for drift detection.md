@@ -295,7 +295,7 @@ def score(training_data_frame):
 - **Binary Classifier - For subscriptions based scoring url**
 ```
 def get_scoring_request(training_data_frame):
-    input_data = training_data.to_json(orient="records")
+    input_data = training_data_frame.to_json(orient="records")
 
     # Payload
     import json
@@ -487,7 +487,7 @@ def score(training_data_frame):
 - **Multi-class Classifier - For subscriptions based scoring url**
 ```
 def get_scoring_request(training_data_frame):
-    input_data = training_data.to_json(orient="records")
+    input_data = training_data_frame.to_json(orient="records")
 
     # Payload
     import json
@@ -539,7 +539,7 @@ def get_prediction_probability_using_scoring_response(
 
         #Construct prob
         score_prob_values = [float(prob) for key,prob in value.items() \
-              if key.startswith(probability_column,0)]
+              if key.startswith(probability_column, 0)]
         score_prob_list.append(score_prob_values)
 
     import numpy as np
