@@ -1,5 +1,7 @@
 # Score function templates for drift detection model generation
 
+## DEPRECATION: This page is now deprecated and will not be updated. Please go to [this wiki](https://github.com/IBM/watson-openscale-samples/wiki/Score-function-templates-for-IBM-Watson-OpenScale) for the updated score function templates.
+
 Users are expected to author custom score functions that needs to be supplied as an input while generating drift detection model using ibm-ai-openscale python client. This page has some templates of score functions that can be used for reference. 
 
 ### Input to score function:
