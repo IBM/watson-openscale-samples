@@ -36,13 +36,13 @@ In case the notebook are running on zLinux Clusters, please use the below comman
     !CC=gcc python -m pip install jenkspy==0.2.0 retrying==1.3.4 marshmallow==3.10.0 more-itertools==8.12.0 numba==0.57.1  
     !python -m pip install --no-build-isolation osqp==0.6.2 cvxpy==1.3.2  
     !python -m pip install shap==0.41.0  
-    !CC=gcc GXX=g++ python -m pip install ibm-metrics-plugin==4.8.0.3  
+    !CC=gcc GXX=g++ python -m pip install ibm-metrics-plugin==4.8.0.6  
 
 #### For Default Spark Environments
 If running the notebooks against Default Spark runtimes on CP4D clusters, please replace the following command
 
-    !pip install --upgrade "ibm-metrics-plugin>=4.8.0.3" "ibm-watson-openscale>=3.0.32"
+    !pip install --upgrade "ibm-metrics-plugin>=4.8.0.6" "ibm-watson-openscale>=3.0.32"
 
 with  
 
-    !pip install --upgrade "ibm-metrics-plugin>=4.8.0.3" "ibm-watson-openscale>=3.0.32" -t /home/spark/shared/user-libs/python
+    !pip install --upgrade "ibm-metrics-plugin>=4.8.0.6" "ibm-watson-openscale>=3.0.32" -t /home/spark/shared/user-libs/python
