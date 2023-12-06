@@ -71,7 +71,7 @@
 
 **Tutorial 5. Working with Batch Support using Remote Spark Engine** - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/Cloud%20Pak%20for%20Data/Batch%20Support/Watson%20OpenScale%20and%20Batch%20Support%20with%20Remote%20Spark.ipynb)
 
-## Model Risk Management, Governance & Other Features
+## Model Risk Management, Governance, Adversarial Robustness Checks & Other Features
 
 **Watson OpenScale Model Risk Management**
 
@@ -91,6 +91,10 @@
 - Tutorial 1: Watson OpenScale indirect bias detection for protected features - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/IBM%20Cloud/WML/notebooks/indirect_bias/OpenScale%20Indirect%20Bias%20and%20Watson%20ML.ipynb)
 
 - Tutorial 2: Watson OpenScale indirect bias and active debiasing on IBM Cloud Pak for data - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/Cloud%20Pak%20for%20Data/WML/notebooks/indirect_bias/OpenScale%20Indirect%20Bias%20and%20active%20debias%20API%20usage%20-%20CP4D.ipynb)
+
+**Watson Openscale Adversarial attack detection on image models**
+
+- Tutorial: Adversarial Robustness Metrics for Image models - [notebook] (https://github.com/IBM/watson-openscale-samples/blob/main/Cloud%20Pak%20for%20Data/misc/Adversarial%20Robustness%20Metrics%20for%20Image%20models.ipynb)
 
 **Miscellaneous**
 
