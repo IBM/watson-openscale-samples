@@ -94,7 +94,7 @@
 
 **Watson Openscale Adversarial attack detection on image models**
 
-- Tutorial: Adversarial Robustness Metrics for Image models - [notebook] (https://github.com/IBM/watson-openscale-samples/blob/main/Cloud%20Pak%20for%20Data/misc/Adversarial%20Robustness%20Metrics%20for%20Image%20models.ipynb)
+- Tutorial: Adversarial Robustness Metrics for Image models - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/Cloud%20Pak%20for%20Data/misc/Adversarial%20Robustness%20Metrics%20for%20Image%20models.ipynb)
 
 **Miscellaneous**
 
