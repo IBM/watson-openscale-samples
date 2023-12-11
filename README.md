@@ -99,6 +99,3 @@
 **Miscellaneous**
 
 - Tutorial 1: Watson OpenScale Configure subscription monitors using training data statistics - [notebook](https://github.com/IBM/watson-openscale-samples/blob/main/IBM%20Cloud/WML/notebooks/Misc/Configure%20subscription%20monitors%20using%20training%20statistics.ipynb)
-
-**Source attribution notebook**
-The Source attribution notebook can be read from - [notebook]()
