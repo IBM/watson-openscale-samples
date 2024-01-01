@@ -10,13 +10,13 @@ The available task ids that we have are are
 5. extraction - This identifier is designated for tasks related to entity extraction
 
 
-Users can set up a genarative ai quality monitor across all task types except for classification. In the case of classification, users have the option to configure the quality monitor. Drift V2 monitor can be configured with production subscription.
+Users can set up a generative ai quality monitor across all task types except for classification. In the case of classification, users have the option to configure the quality monitor. Drift V2 monitor can be configured with production subscription.
 
 
 
-# Sample congiguration for Generative ai quality monitor:
+# Sample configuration for Generative ai quality monitor:
 
-All metrics for genarative ai quality are not supported for all task types. Hence configurations matching for different task types are listed down separately.
+All metrics for generative ai quality are not supported for all task types. Hence configurations matching for different task types are listed down separately.
 
 
 ## Sample configuration for `summarization` task type
@@ -321,7 +321,7 @@ All metrics for genarative ai quality are not supported for all task types. Henc
     }
   }
 
-# Sample congiguration for quality monitor is:
+# Sample configuration for quality monitor is:
 
     "quality": {
         "thresholds": [
@@ -380,7 +380,7 @@ All metrics for genarative ai quality are not supported for all task types. Henc
     }
 
 
-# Sample congiguration for Drift V2 monitor is:
+# Sample configuration for Drift V2 monitor is:
 
     "drift_v2": {
         "thresholds": [
