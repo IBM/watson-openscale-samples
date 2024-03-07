@@ -2,8 +2,8 @@
 
 **SDK DETAILS:**
 
-- [IBM Watson Machine Learning](http://ibm-wml-api-pyclient.mybluemix.net/)
-- [IBM Watson Openscale](http://ibm-watson-openscale-client.mybluemix.net/)
+- [IBM Watson Machine Learning](https://ibm.github.io/watson-machine-learning-sdk/)
+- [IBM Watson Openscale](https://client-docs.aiopenscale.cloud.ibm.com/html/index.html)
 
 **Additional resources:**
 
