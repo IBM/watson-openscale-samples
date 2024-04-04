@@ -1,0 +1,11 @@
+input_text,generated_text,reference_text
+John's credit card number is 4111 1111 1111 1111. His email address is example1@example.com  IP address is 192.168.1.1 and phone number is +1 (555) 123-4567, 4111 1111 1111 1111, 4111 1111 1111 1111
+Mary's credit card number is 5555 5555 5555 5555. Her email address is example2@example.com  IP address is 10.0.0.1 and phone number is 123-456-7890., 5555 5555 5555 5555, 5555 5555 5555 5555
+David's credit card number is 1234 5678 9012 3456. His email address is example3@example.com  IP address is 172.16.0.1  and phone number is (555) 987-6543., 1234 5678 9012 3456, 1234 5678 9012 3456
+Sarah's credit card number is 6011 1234 5678 9012. Her email address is example4@example.com  IP address is 203.0.113.0  and phone number is +44 20 1234 5678., 6011 1234 5678 9012, 6011 1234 5678 9012
+Alice's credit card number is 5105 1051 0510 5100. Her email address is example5@example.com  IP address is 2001:0db8:85a3:0000:0000:8a2e:0370:7334  and phone number is 1-800-555-5555., 5105 1051 0510 5100, 5105 1051 0510 5100
+Michael's credit card number is 3714 496353 98431. His email address is example6@example.com  IP address is 2606:4700:4700::1111  and phone number is 0987654321., 5105 1051 0510 5100, 5105 1051 0510 5100
+Emily's credit card number is 30569309025904. Her email address is example7@example.com  IP address is 198.51.100.0  and phone number is 9876543210., 30569309025904, example7@example.com
+Mark's credit card number is 3852 0000 0232 37. His email address is example8@example.com  IP address is 192.0.2.0  and phone number is +61 2 1234 5678. example7@example.com, example7@example.com
+Emma's credit card number is 6011000990139424. Her email address is example9@example.com  IP address is 2001:db8:0:1234:0:567:8:1  and phone number is 987-654-3210., 6011000990139424, 6011000990139424
+Jack's credit card number is 5432 1234 5678 8765. His email address is example10@example.com  IP address is 192.0.2.255  and phone number is (123) 456-7890., example10@example.com, example10@example.com
