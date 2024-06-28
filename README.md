@@ -1,3 +1,23 @@
+# The directory structure for finding the right notebooks.
+
+`/cpd_5.0/Predictive ML/configuration/batch`: for the common configuration notebooks for batch predictive ML subscriptions in CPD 5.0.
+
+`/cpd_5.0/Predictive ML/configuration/online`: for the training statistics notebooks for online predictive ML subscriptions in CPD 5.0.
+
+`/cpd_5.0/Predictive ML/samples`: for the sample notebooks for predictive ML subscriptions in CPD 5.0.
+
+`/IBM Cloud/configuration/online`: for the training statistics notebooks for online predictive ML subscriptions in SaaS.
+
+`/IBM Cloud/samples`: for the sample notebooks for online predictive ML subscriptions in SaaS.
+
+`/WatsonX.Governance/OnPrem/GenAI/2.0/samples`: for the sample notebooks for prompt subscriptions in WXG 2.0.
+
+`/WatsonX.Governance/Cloud/GenAI/samples`: for the sample notebooks for prompt subscriptions in SaaS.
+
+`/WatsonX.Governance/OnPrem/GenAI/2.0/configuration`: for the configuration notebooks for prompt subscriptions in WXG 2.0.
+
+`/WatsonX.Governance/Cloud/GenAI/configuration`: for the configuration notebooks for prompt subscriptions in SaaS.
+
 # IBM Watson OpenScale tutorials
 
 **SDK DETAILS:**
